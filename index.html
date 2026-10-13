@@ -63,7 +63,162 @@ const data=[
 ["Sebelum makan, sebaiknya kita ...",["Mencuci tangan","Bermain tanah","Tidur","Membuang makanan","Berlari"],"Mencuci tangan"],
 ["Sampah sebaiknya dibuang ke ...",["Sungai","Jalan","Halaman","Selokan","Tempat sampah"],"Tempat sampah"]
 ];
-let i=0,correct=0,selected=null,name="";
+
+/* GANTI DENGAN URL WEB APP LU */
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzKqJiiwKGZGitQq7vjYYS62i9hn8a5K5cQvdz5NqhHJtxo7r-lppShP1JDJxjGrrbrhg/exec";
+
+let i = 0;
+let correct = 0;
+let selected = null;
+let name = "";
+let answers = [];
+let saving = false;
+
+const $ = x => document.getElementById(x);
+
+function startQuiz() {
+    name = $("name").value.trim();
+
+    if (!name) {
+        $("error").textContent = "Isi nama dulu ya!";
+        return;
+    }
+
+    $("error").textContent = "";
+    i = 0;
+    correct = 0;
+    selected = null;
+    answers = [];
+    saving = false;
+
+    $("start").classList.add("hidden");
+    $("result").classList.add("hidden");
+    $("quiz").classList.remove("hidden");
+
+    render();
+}
+
+function render() {
+    selected = null;
+    $("next").disabled = true;
+
+    const x = data[i];
+
+    $("num").textContent =
+        `Soal ${i + 1} dari ${data.length}`;
+
+    $("pts").textContent = `${correct * 5} poin`;
+
+    $("bar").style.width =
+        ((i + 1) / data.length * 100) + "%";
+
+    $("q").textContent = x[0];
+    $("choices").innerHTML = "";
+
+    x[1].forEach((c, n) => {
+        const b = document.createElement("button");
+
+        b.className = "choice";
+        b.textContent =
+            String.fromCharCode(65 + n) + ". " + c;
+
+        b.onclick = () => {
+            selected = c;
+
+            document.querySelectorAll(".choice")
+                .forEach(z => z.classList.remove("selected"));
+
+            b.classList.add("selected");
+            $("next").disabled = false;
+        };
+
+        $("choices").appendChild(b);
+    });
+
+    $("next").textContent =
+        i === data.length - 1 ? "Selesai" : "Lanjut";
+}
+
+async function nextQuestion() {
+    if (selected === null || saving) return;
+
+    const soal = data[i];
+    const jawabanBenar = selected === soal[2];
+
+    answers.push({
+        question: soal[0],
+        selected: selected,
+        key: soal[2],
+        isCorrect: jawabanBenar
+    });
+
+    if (jawabanBenar) correct++;
+
+    if (i < data.length - 1) {
+        i++;
+        render();
+    } else {
+        await finishQuiz();
+    }
+}
+
+async function finishQuiz() {
+    saving = true;
+
+    $("quiz").classList.add("hidden");
+    $("result").classList.remove("hidden");
+
+    $("resultName").textContent = "Nama: " + name;
+    $("score").textContent = (correct * 5) + "/100";
+
+    $("detail").textContent =
+        `Benar ${correct} soal • Salah ${data.length - correct} soal • Menyimpan hasil...`;
+
+    // Nonaktifkan tombol agar hasil tidak terkirim berulang
+    const tombolUlang = $("result").querySelector("button");
+    tombolUlang.disabled = true;
+
+    const hasil = {
+        name: name,
+        score: correct * 5,
+        correct: correct,
+        wrong: data.length - correct,
+        answers: answers
+    };
+
+    try {
+        if (SCRIPT_URL === "TEMPEL_URL_WEB_APP_DI_SINI") {
+            throw new Error("URL belum diatur");
+        }
+
+        await fetch(SCRIPT_URL, {
+            method: "POST",
+            mode: "no-cors",
+            headers: {
+                "Content-Type": "text/plain;charset=utf-8"
+            },
+            body: JSON.stringify(hasil)
+        });
+
+        $("detail").textContent =
+            `Benar ${correct} soal • Salah ${data.length - correct} soal • Pengiriman selesai.`;
+
+    } catch (error) {
+        console.error("Pengiriman hasil gagal:", error);
+
+        $("detail").textContent =
+            `Benar ${correct} soal • Salah ${data.length - correct} soal • Hasil belum dapat dipastikan tersimpan.`;
+    }
+
+    tombolUlang.disabled = false;
+}
+
+function restart() {
+    $("name").value = name;
+    $("result").classList.add("hidden");
+    $("start").classList.remove("hidden");
+}
+
 const $=x=>document.getElementById(x);
 function startQuiz(){
  name=$("name").value.trim();
