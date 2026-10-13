@@ -1,88 +1,159 @@
+
 <!doctype html>
 <html lang="id">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Kuis Sains Kelas 1</title>
+
 <style>
-body{font-family:Arial,sans-serif;background:#f2f5f9;margin:0;color:#172033}
-.card{max-width:700px;margin:40px auto;background:#fff;padding:28px;border-radius:18px;box-shadow:0 8px 25px #0001}
-h1{margin-top:0}
-input{width:100%;padding:13px;border:1px solid #ccd3df;border-radius:10px;font-size:16px;box-sizing:border-box}
-button{font-size:16px;padding:13px 18px;border:0;border-radius:10px;cursor:pointer}
-button:disabled{opacity:.55;cursor:not-allowed}
-.primary{background:#2563eb;color:white}
-.choice{display:block;width:100%;text-align:left;margin:10px 0;background:#f8fafc;border:2px solid #e2e8f0}
-.choice.selected{border-color:#2563eb;background:#eff6ff}
-.progress{height:8px;background:#e5e7eb;border-radius:10px;overflow:hidden;margin:15px 0 25px}
-.bar{height:100%;background:#2563eb;width:0}
-.top{display:flex;justify-content:space-between}
-.muted{color:#667085}
-.hidden{display:none}
-.center{text-align:center}
-.score{font-size:54px;font-weight:bold;margin:20px}
-.error{color:#d92d20}
-.card button.primary{max-width:100%}
-@media(max-width:600px){
- .card{margin:15px;padding:20px}
- .score{font-size:44px}
+body {
+  font-family: Arial, sans-serif;
+  background: #f2f5f9;
+  margin: 0;
+  color: #172033;
+}
+.card {
+  max-width: 700px;
+  margin: 40px auto;
+  background: #fff;
+  padding: 28px;
+  border-radius: 18px;
+  box-shadow: 0 8px 25px #0001;
+}
+h1 { margin-top: 0; }
+input {
+  width: 100%;
+  padding: 13px;
+  border: 1px solid #ccd3df;
+  border-radius: 10px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+button {
+  font-size: 16px;
+  padding: 13px 18px;
+  border: 0;
+  border-radius: 10px;
+  cursor: pointer;
+}
+button:disabled {
+  opacity: .55;
+  cursor: not-allowed;
+}
+.primary {
+  background: #2563eb;
+  color: white;
+}
+.choice {
+  display: block;
+  width: 100%;
+  text-align: left;
+  margin: 10px 0;
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+}
+.choice.selected {
+  border-color: #2563eb;
+  background: #eff6ff;
+}
+.progress {
+  height: 8px;
+  background: #e5e7eb;
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 15px 0 25px;
+}
+.bar {
+  height: 100%;
+  background: #2563eb;
+  width: 0;
+}
+.top {
+  display: flex;
+  justify-content: space-between;
+}
+.muted { color: #667085; }
+.hidden { display: none; }
+.center { text-align: center; }
+.score {
+  font-size: 54px;
+  font-weight: bold;
+  margin: 20px;
+}
+.error { color: #d92d20; }
+.card button.primary { max-width: 100%; }
+
+@media(max-width:600px) {
+  .card {
+    margin: 15px;
+    padding: 20px;
+  }
+  .score { font-size: 44px; }
 }
 </style>
 </head>
+
 <body>
 
 <div class="card" id="start">
-<h1>🔬 Kuis Sains Kelas 1</h1>
-<p class="muted">20 soal • 5 poin per soal • Nilai maksimal 100</p>
-<p><b>Nama peserta</b></p>
-<input id="name" placeholder="Masukkan nama kamu" maxlength="100">
-<p id="error" class="error"></p>
-<button class="primary" id="startButton" onclick="startQuiz()">Mulai Kuis</button>
+  <h1>🔬 Kuis Sains Kelas 1</h1>
+  <p class="muted">20 soal • 5 poin per soal • Nilai maksimal 100</p>
+  <p><b>Nama peserta</b></p>
+  <input id="name" placeholder="Masukkan nama kamu" maxlength="100">
+  <p id="error" class="error"></p>
+  <button class="primary" id="startButton" onclick="startQuiz()">
+    Mulai Kuis
+  </button>
 </div>
 
 <div class="card hidden" id="quiz">
-<div class="top">
-<b id="num"></b>
-<span id="pts" class="muted"></span>
-</div>
-<div class="progress"><div class="bar" id="bar"></div></div>
-<h2 id="q"></h2>
-<div id="choices"></div>
-<button class="primary" id="next" disabled onclick="nextQuestion()">Lanjut</button>
+  <div class="top">
+    <b id="num"></b>
+    <span id="pts" class="muted"></span>
+  </div>
+  <div class="progress"><div class="bar" id="bar"></div></div>
+  <h2 id="q"></h2>
+  <div id="choices"></div>
+  <button class="primary" id="next" disabled onclick="nextQuestion()">
+    Lanjut
+  </button>
 </div>
 
 <div class="card center hidden" id="result">
-<h1>🎉 Kuis Selesai!</h1>
-<p id="resultName"></p>
-<div class="score" id="score"></div>
-<p id="detail" class="muted"></p>
-<button class="primary" id="retryButton" onclick="restart()">Ulangi Kuis</button>
+  <h1>🎉 Kuis Selesai!</h1>
+  <p id="resultName"></p>
+  <div class="score" id="score"></div>
+  <p id="detail" class="muted"></p>
+  <button class="primary" id="retryButton" onclick="restart()">
+    Ulangi Kuis
+  </button>
 </div>
 
 <script>
 const FORMSPREE_URL = "https://formspree.io/f/xeaerobg";
 
 const data = [
-["Bagian tubuh yang digunakan untuk melihat adalah ...",["Telinga","Mata","Hidung","Tangan","Kaki"],"Mata"],
-["Kita menggunakan telinga untuk ...",["Melihat","Berjalan","Mendengar","Mencium","Memegang"],"Mendengar"],
-["Hidung berguna untuk ...",["Mendengar suara","Melihat benda","Mencium bau","Berjalan","Menulis"],"Mencium bau"],
-["Bagian tubuh yang digunakan untuk berjalan adalah ...",["Mata","Telinga","Hidung","Kaki","Mulut"],"Kaki"],
-["Berikut yang termasuk makhluk hidup adalah ...",["Batu","Meja","Kucing","Kursi","Pensil"],"Kucing"],
-["Berikut yang termasuk benda tak hidup adalah ...",["Ayam","Pohon","Ikan","Sepeda","Kucing"],"Sepeda"],
-["Salah satu ciri makhluk hidup adalah ...",["Bernapas","Tidak tumbuh","Tidak membutuhkan air","Tidak membutuhkan makanan","Selalu diam"],"Bernapas"],
-["Manusia membutuhkan ... untuk hidup.",["Batu","Makanan","Pensil","Meja","Sepatu"],"Makanan"],
-["Tumbuhan membutuhkan ... untuk hidup.",["Air","Buku","Tas","Sepeda","Bola"],"Air"],
-["Ikan hidup di ...",["Tanah","Air","Lemari","Meja","Atap"],"Air"],
-["Bagian tumbuhan yang berada di dalam tanah adalah ...",["Daun","Bunga","Buah","Akar","Batang"],"Akar"],
-["Bagian tumbuhan yang biasanya berwarna hijau adalah ...",["Daun","Akar","Biji","Buah","Bunga"],"Daun"],
-["Bagian tumbuhan yang menopang daun adalah ...",["Akar","Batang","Bunga","Buah","Biji"],"Batang"],
-["Saat air turun dari langit, cuacanya disebut ...",["Cerah","Panas","Hujan","Berangin","Dingin"],"Hujan"],
-["Saat matahari bersinar terang dan langit tidak tertutup awan, cuacanya ...",["Hujan","Cerah","Badai","Gelap","Mendung"],"Cerah"],
-["Sumber cahaya alami adalah ...",["Lampu","Lilin","Senter","Matahari","Televisi"],"Matahari"],
-["Contoh sumber bunyi adalah ...",["Matahari","Lampu","Drum","Buku","Meja"],"Drum"],
-["Agar gigi tetap bersih, kita harus ...",["Jarang mandi","Menyikat gigi","Bermain di tempat sampah","Tidak mencuci tangan","Memakai pakaian kotor"],"Menyikat gigi"],
-["Sebelum makan, sebaiknya kita ...",["Mencuci tangan","Bermain tanah","Tidur","Membuang makanan","Berlari"],"Mencuci tangan"],
-["Sampah sebaiknya dibuang ke ...",["Sungai","Jalan","Halaman","Selokan","Tempat sampah"],"Tempat sampah"]
+  ["Bagian tubuh yang digunakan untuk melihat adalah ...", ["Telinga","Mata","Hidung","Tangan","Kaki"], "Mata"],
+  ["Kita menggunakan telinga untuk ...", ["Melihat","Berjalan","Mendengar","Mencium","Memegang"], "Mendengar"],
+  ["Hidung berguna untuk ...", ["Mendengar suara","Melihat benda","Mencium bau","Berjalan","Menulis"], "Mencium bau"],
+  ["Bagian tubuh yang digunakan untuk berjalan adalah ...", ["Mata","Telinga","Hidung","Kaki","Mulut"], "Kaki"],
+  ["Berikut yang termasuk makhluk hidup adalah ...", ["Batu","Meja","Kucing","Kursi","Pensil"], "Kucing"],
+  ["Berikut yang termasuk benda tak hidup adalah ...", ["Ayam","Pohon","Ikan","Sepeda","Kucing"], "Sepeda"],
+  ["Salah satu ciri makhluk hidup adalah ...", ["Bernapas","Tidak tumbuh","Tidak membutuhkan air","Tidak membutuhkan makanan","Selalu diam"], "Bernapas"],
+  ["Manusia membutuhkan ... untuk hidup.", ["Batu","Makanan","Pensil","Meja","Sepatu"], "Makanan"],
+  ["Tumbuhan membutuhkan ... untuk hidup.", ["Air","Buku","Tas","Sepeda","Bola"], "Air"],
+  ["Ikan hidup di ...", ["Tanah","Air","Lemari","Meja","Atap"], "Air"],
+  ["Bagian tumbuhan yang berada di dalam tanah adalah ...", ["Daun","Bunga","Buah","Akar","Batang"], "Akar"],
+  ["Bagian tumbuhan yang biasanya berwarna hijau adalah ...", ["Daun","Akar","Biji","Buah","Bunga"], "Daun"],
+  ["Bagian tumbuhan yang menopang daun adalah ...", ["Akar","Batang","Bunga","Buah","Biji"], "Batang"],
+  ["Saat air turun dari langit, cuacanya disebut ...", ["Cerah","Panas","Hujan","Berangin","Dingin"], "Hujan"],
+  ["Saat matahari bersinar terang dan langit tidak tertutup awan, cuacanya ...", ["Hujan","Cerah","Badai","Gelap","Mendung"], "Cerah"],
+  ["Sumber cahaya alami adalah ...", ["Lampu","Lilin","Senter","Matahari","Televisi"], "Matahari"],
+  ["Contoh sumber bunyi adalah ...", ["Matahari","Lampu","Drum","Buku","Meja"], "Drum"],
+  ["Agar gigi tetap bersih, kita harus ...", ["Jarang mandi","Menyikat gigi","Bermain di tempat sampah","Tidak mencuci tangan","Memakai pakaian kotor"], "Menyikat gigi"],
+  ["Sebelum makan, sebaiknya kita ...", ["Mencuci tangan","Bermain tanah","Tidur","Membuang makanan","Berlari"], "Mencuci tangan"],
+  ["Sampah sebaiknya dibuang ke ...", ["Sungai","Jalan","Halaman","Selokan","Tempat sampah"], "Tempat sampah"]
 ];
 
 let i = 0;
@@ -191,10 +262,17 @@ async function finishQuiz() {
   $("retryButton").disabled = true;
 
   try {
-    // Formspree menerima data formulir melalui POST.
-    // Detail jawaban dikirim sebagai teks JSON.
     const formData = new FormData();
 
+    // Waktu lokal Indonesia Barat (WIB, UTC+7)
+    const waktuWIB = new Intl.DateTimeFormat("id-ID", {
+      timeZone: "Asia/Jakarta",
+      dateStyle: "medium",
+      timeStyle: "medium"
+    }).format(new Date());
+
+    // Data hasil kuis
+    formData.append("Waktu Kuis (WIB)", waktuWIB);
     formData.append("Nama", name);
     formData.append("Nilai", String(correct * 5));
     formData.append("Jumlah benar", String(correct));
