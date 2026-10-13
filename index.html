@@ -7,25 +7,44 @@
 <style>
 body{font-family:Arial,sans-serif;background:#f2f5f9;margin:0;color:#172033}
 .card{max-width:700px;margin:40px auto;background:#fff;padding:28px;border-radius:18px;box-shadow:0 8px 25px #0001}
-h1{margin-top:0}input{width:100%;padding:13px;border:1px solid #ccd3df;border-radius:10px;font-size:16px;box-sizing:border-box}
+h1{margin-top:0}
+input{width:100%;padding:13px;border:1px solid #ccd3df;border-radius:10px;font-size:16px;box-sizing:border-box}
 button{font-size:16px;padding:13px 18px;border:0;border-radius:10px;cursor:pointer}
-.primary{background:#2563eb;color:white}.choice{display:block;width:100%;text-align:left;margin:10px 0;background:#f8fafc;border:2px solid #e2e8f0}.choice.selected{border-color:#2563eb;background:#eff6ff}
-.progress{height:8px;background:#e5e7eb;border-radius:10px;overflow:hidden;margin:15px 0 25px}.bar{height:100%;background:#2563eb;width:0}
-.top{display:flex;justify-content:space-between}.muted{color:#667085}.hidden{display:none}.center{text-align:center}.score{font-size:54px;font-weight:bold;margin:20px}.error{color:#d92d20}
+button:disabled{opacity:.55;cursor:not-allowed}
+.primary{background:#2563eb;color:white}
+.choice{display:block;width:100%;text-align:left;margin:10px 0;background:#f8fafc;border:2px solid #e2e8f0}
+.choice.selected{border-color:#2563eb;background:#eff6ff}
+.progress{height:8px;background:#e5e7eb;border-radius:10px;overflow:hidden;margin:15px 0 25px}
+.bar{height:100%;background:#2563eb;width:0}
+.top{display:flex;justify-content:space-between}
+.muted{color:#667085}
+.hidden{display:none}
+.center{text-align:center}
+.score{font-size:54px;font-weight:bold;margin:20px}
+.error{color:#d92d20}
+.card button.primary{max-width:100%}
+@media(max-width:600px){
+ .card{margin:15px;padding:20px}
+ .score{font-size:44px}
+}
 </style>
 </head>
 <body>
+
 <div class="card" id="start">
 <h1>🔬 Kuis Sains Kelas 1</h1>
 <p class="muted">20 soal • 5 poin per soal • Nilai maksimal 100</p>
 <p><b>Nama peserta</b></p>
-<input id="name" placeholder="Masukkan nama kamu">
+<input id="name" placeholder="Masukkan nama kamu" maxlength="100">
 <p id="error" class="error"></p>
-<button class="primary" onclick="startQuiz()">Mulai Kuis</button>
+<button class="primary" id="startButton" onclick="startQuiz()">Mulai Kuis</button>
 </div>
 
 <div class="card hidden" id="quiz">
-<div class="top"><b id="num"></b><span id="pts" class="muted"></span></div>
+<div class="top">
+<b id="num"></b>
+<span id="pts" class="muted"></span>
+</div>
 <div class="progress"><div class="bar" id="bar"></div></div>
 <h2 id="q"></h2>
 <div id="choices"></div>
@@ -37,11 +56,13 @@ button{font-size:16px;padding:13px 18px;border:0;border-radius:10px;cursor:point
 <p id="resultName"></p>
 <div class="score" id="score"></div>
 <p id="detail" class="muted"></p>
-<button class="primary" onclick="restart()">Ulangi Kuis</button>
+<button class="primary" id="retryButton" onclick="restart()">Ulangi Kuis</button>
 </div>
 
 <script>
-const data=[
+const FORMSPREE_URL = "https://formspree.io/f/xeaerobg";
+
+const data = [
 ["Bagian tubuh yang digunakan untuk melihat adalah ...",["Telinga","Mata","Hidung","Tangan","Kaki"],"Mata"],
 ["Kita menggunakan telinga untuk ...",["Melihat","Berjalan","Mendengar","Mencium","Memegang"],"Mendengar"],
 ["Hidung berguna untuk ...",["Mendengar suara","Melihat benda","Mencium bau","Berjalan","Menulis"],"Mencium bau"],
@@ -64,9 +85,6 @@ const data=[
 ["Sampah sebaiknya dibuang ke ...",["Sungai","Jalan","Halaman","Selokan","Tempat sampah"],"Tempat sampah"]
 ];
 
-/* https://script.google.com/macros/s/AKfycbz8ei3m2zPKZuZX6qeuBs-qsRl_DxjHLcbKdrP9dXRivTdY8l2lT34dldvQxQROdzObeQ/exec */
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz8ei3m2zPKZuZX6qeuBs-qsRl_DxjHLcbKdrP9dXRivTdY8l2lT34dldvQxQROdzObeQ/exec";
-
 let i = 0;
 let correct = 0;
 let selected = null;
@@ -74,176 +92,158 @@ let name = "";
 let answers = [];
 let saving = false;
 
-const $ = x => document.getElementById(x);
+const $ = id => document.getElementById(id);
 
 function startQuiz() {
-    name = $("name").value.trim();
+  name = $("name").value.trim();
 
-    if (!name) {
-        $("error").textContent = "Isi nama dulu ya!";
-        return;
-    }
+  if (!name) {
+    $("error").textContent = "Isi nama dulu ya!";
+    $("name").focus();
+    return;
+  }
 
-    $("error").textContent = "";
-    i = 0;
-    correct = 0;
-    selected = null;
-    answers = [];
-    saving = false;
+  $("error").textContent = "";
+  i = 0;
+  correct = 0;
+  selected = null;
+  answers = [];
+  saving = false;
 
-    $("start").classList.add("hidden");
-    $("result").classList.add("hidden");
-    $("quiz").classList.remove("hidden");
+  $("start").classList.add("hidden");
+  $("result").classList.add("hidden");
+  $("quiz").classList.remove("hidden");
 
-    render();
+  render();
 }
 
 function render() {
-    selected = null;
-    $("next").disabled = true;
+  selected = null;
+  $("next").disabled = true;
 
-    const x = data[i];
+  const soal = data[i];
 
-    $("num").textContent =
-        `Soal ${i + 1} dari ${data.length}`;
+  $("num").textContent = `Soal ${i + 1} dari ${data.length}`;
+  $("pts").textContent = `${correct * 5} poin`;
+  $("bar").style.width = `${(i + 1) / data.length * 100}%`;
+  $("q").textContent = soal[0];
+  $("choices").innerHTML = "";
 
-    $("pts").textContent = `${correct * 5} poin`;
+  soal[1].forEach((pilihan, index) => {
+    const tombol = document.createElement("button");
 
-    $("bar").style.width =
-        ((i + 1) / data.length * 100) + "%";
+    tombol.type = "button";
+    tombol.className = "choice";
+    tombol.textContent = `${String.fromCharCode(65 + index)}. ${pilihan}`;
 
-    $("q").textContent = x[0];
-    $("choices").innerHTML = "";
+    tombol.onclick = () => {
+      selected = pilihan;
 
-    x[1].forEach((c, n) => {
-        const b = document.createElement("button");
+      document.querySelectorAll(".choice").forEach(el => {
+        el.classList.remove("selected");
+      });
 
-        b.className = "choice";
-        b.textContent =
-            String.fromCharCode(65 + n) + ". " + c;
+      tombol.classList.add("selected");
+      $("next").disabled = false;
+    };
 
-        b.onclick = () => {
-            selected = c;
+    $("choices").appendChild(tombol);
+  });
 
-            document.querySelectorAll(".choice")
-                .forEach(z => z.classList.remove("selected"));
-
-            b.classList.add("selected");
-            $("next").disabled = false;
-        };
-
-        $("choices").appendChild(b);
-    });
-
-    $("next").textContent =
-        i === data.length - 1 ? "Selesai" : "Lanjut";
+  $("next").textContent =
+    i === data.length - 1 ? "Selesai" : "Lanjut";
 }
 
 async function nextQuestion() {
-    if (selected === null || saving) return;
+  if (selected === null || saving) return;
 
-    const soal = data[i];
-    const jawabanBenar = selected === soal[2];
+  const soal = data[i];
+  const jawabanBenar = selected === soal[2];
 
-    answers.push({
-        question: soal[0],
-        selected: selected,
-        key: soal[2],
-        isCorrect: jawabanBenar
-    });
+  answers.push({
+    question: soal[0],
+    selected: selected,
+    key: soal[2],
+    isCorrect: jawabanBenar ? "Benar" : "Salah"
+  });
 
-    if (jawabanBenar) correct++;
+  if (jawabanBenar) correct++;
 
-    if (i < data.length - 1) {
-        i++;
-        render();
-    } else {
-        await finishQuiz();
-    }
+  if (i < data.length - 1) {
+    i++;
+    render();
+  } else {
+    await finishQuiz();
+  }
 }
 
 async function finishQuiz() {
-    saving = true;
+  if (saving) return;
+  saving = true;
 
-    $("quiz").classList.add("hidden");
-    $("result").classList.remove("hidden");
+  $("quiz").classList.add("hidden");
+  $("result").classList.remove("hidden");
+  $("resultName").textContent = "Nama: " + name;
+  $("score").textContent = (correct * 5) + "/100";
+  $("detail").textContent =
+    `Benar ${correct} soal • Salah ${data.length - correct} soal • Mengirim hasil...`;
 
-    $("resultName").textContent = "Nama: " + name;
-    $("score").textContent = (correct * 5) + "/100";
+  $("retryButton").disabled = true;
 
-    $("detail").textContent =
-        `Benar ${correct} soal • Salah ${data.length - correct} soal • Menyimpan hasil...`;
+  try {
+    // Formspree menerima data formulir melalui POST.
+    // Detail jawaban dikirim sebagai teks JSON.
+    const formData = new FormData();
 
-    // Nonaktifkan tombol agar hasil tidak terkirim berulang
-    const tombolUlang = $("result").querySelector("button");
-    tombolUlang.disabled = true;
+    formData.append("Nama", name);
+    formData.append("Nilai", String(correct * 5));
+    formData.append("Jumlah benar", String(correct));
+    formData.append("Jumlah salah", String(data.length - correct));
+    formData.append("Detail jawaban", JSON.stringify(answers, null, 2));
+    formData.append("_subject", "Hasil Kuis Sains - " + name);
 
-    const hasil = {
-        name: name,
-        score: correct * 5,
-        correct: correct,
-        wrong: data.length - correct,
-        answers: answers
-    };
+    const response = await fetch(FORMSPREE_URL, {
+      method: "POST",
+      body: formData,
+      headers: {
+        "Accept": "application/json"
+      }
+    });
 
-    try {
-        if (SCRIPT_URL === "TEMPEL_URL_WEB_APP_DI_SINI") {
-            throw new Error("URL belum diatur");
+    if (!response.ok) {
+      let pesan = "HTTP " + response.status;
+
+      try {
+        const hasilError = await response.json();
+        if (hasilError.errors) {
+          pesan = hasilError.errors.map(e => e.message).join(", ");
         }
+      } catch (_) {}
 
-        await fetch(SCRIPT_URL, {
-            method: "POST",
-            mode: "no-cors",
-            headers: {
-                "Content-Type": "text/plain;charset=utf-8"
-            },
-            body: JSON.stringify(hasil)
-        });
-
-        $("detail").textContent =
-            `Benar ${correct} soal • Salah ${data.length - correct} soal • Pengiriman selesai.`;
-
-    } catch (error) {
-        console.error("Pengiriman hasil gagal:", error);
-
-        $("detail").textContent =
-            `Benar ${correct} soal • Salah ${data.length - correct} soal • Hasil belum dapat dipastikan tersimpan.`;
+      throw new Error(pesan);
     }
 
-    tombolUlang.disabled = false;
+    $("detail").textContent =
+      `Benar ${correct} soal • Salah ${data.length - correct} soal • Hasil berhasil dikirim!`;
+
+  } catch (error) {
+    console.error("Gagal mengirim hasil:", error);
+
+    $("detail").textContent =
+      `Benar ${correct} soal • Salah ${data.length - correct} soal • Pengiriman gagal. Coba lagi dengan mengulangi kuis.`;
+  }
+
+  $("retryButton").disabled = false;
 }
 
 function restart() {
-    $("name").value = name;
-    $("result").classList.add("hidden");
-    $("start").classList.remove("hidden");
-}
-function render(){
- selected=null;$("next").disabled=true;
- let x=data[i];
- $("num").textContent=`Soal ${i+1} dari ${data.length}`;
- $("pts").textContent=`${correct*5} poin`;
- $("bar").style.width=((i+1)/data.length*100)+"%";
- $("q").textContent=x[0];$("choices").innerHTML="";
- x[1].forEach((c,n)=>{
-  let b=document.createElement("button");b.className="choice";
-  b.textContent=String.fromCharCode(65+n)+". "+c;
-  b.onclick=()=>{selected=c;document.querySelectorAll(".choice").forEach(z=>z.classList.remove("selected"));b.classList.add("selected");$("next").disabled=false};
-  $("choices").appendChild(b);
- });
- $("next").textContent=i===data.length-1?"Selesai":"Lanjut";
-}
-function nextQuestion(){
- if(selected===null)return;
- if(selected===data[i][2])correct++;
- if(i<data.length-1){i++;render()}
- else{
-  $("quiz").classList.add("hidden");$("result").classList.remove("hidden");
-  $("resultName").textContent="Nama: "+name;
-  $("score").textContent=(correct*5)+"/100";
-  $("detail").textContent=`Benar ${correct} soal • Salah ${data.length-correct} soal`;
- }
+  if (saving) return;
+
+  $("name").value = name;
+  $("result").classList.add("hidden");
+  $("start").classList.remove("hidden");
 }
 </script>
+
 </body>
 </html>
