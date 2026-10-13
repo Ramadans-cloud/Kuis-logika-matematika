@@ -1,95 +1,111 @@
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Kuis Sains Kelas 1</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kuis Logika Matematika SD</title>
 
 <style>
+* { box-sizing: border-box; }
+
 body {
-  font-family: Arial, sans-serif;
-  background: #f2f5f9;
   margin: 0;
-  color: #172033;
+  padding: 16px;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #dbeafe, #fef3c7);
+  color: #243047;
 }
+
 .card {
-  max-width: 700px;
-  margin: 40px auto;
-  background: #fff;
-  padding: 28px;
-  border-radius: 18px;
-  box-shadow: 0 8px 25px #0001;
+  max-width: 680px;
+  margin: 20px auto;
+  padding: 26px;
+  background: white;
+  border-radius: 22px;
+  box-shadow: 0 8px 28px #33415520;
 }
-h1 { margin-top: 0; }
+
+h1 { font-size: 27px; margin-top: 0; }
+h2 { line-height: 1.5; font-size: 23px; }
+.muted { color: #64748b; line-height: 1.6; }
+
 input {
+  display: block;
   width: 100%;
-  padding: 13px;
-  border: 1px solid #ccd3df;
-  border-radius: 10px;
+  padding: 14px;
+  margin: 10px 0 16px;
+  border: 2px solid #cbd5e1;
+  border-radius: 12px;
   font-size: 16px;
-  box-sizing: border-box;
 }
+
 button {
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
   font-size: 16px;
-  padding: 13px 18px;
-  border: 0;
-  border-radius: 10px;
   cursor: pointer;
 }
-button:disabled {
-  opacity: .55;
-  cursor: not-allowed;
-}
+
+button:disabled { opacity: .55; cursor: not-allowed; }
+
 .primary {
   background: #2563eb;
   color: white;
+  font-weight: bold;
 }
+
+.full { width: 100%; }
+
 .choice {
-  display: block;
   width: 100%;
-  text-align: left;
+  display: block;
   margin: 10px 0;
+  text-align: left;
   background: #f8fafc;
   border: 2px solid #e2e8f0;
+  color: #243047;
+  line-height: 1.5;
 }
+
 .choice.selected {
   border-color: #2563eb;
-  background: #eff6ff;
+  background: #dbeafe;
 }
+
 .progress {
-  height: 8px;
-  background: #e5e7eb;
-  border-radius: 10px;
+  height: 9px;
+  background: #e2e8f0;
+  border-radius: 20px;
   overflow: hidden;
-  margin: 15px 0 25px;
+  margin: 16px 0 24px;
 }
+
 .bar {
   height: 100%;
-  background: #2563eb;
   width: 0;
+  background: #2563eb;
+  transition: width .2s;
 }
+
 .top {
   display: flex;
   justify-content: space-between;
+  gap: 12px;
 }
-.muted { color: #667085; }
-.hidden { display: none; }
-.center { text-align: center; }
-.score {
-  font-size: 54px;
-  font-weight: bold;
-  margin: 20px;
-}
-.error { color: #d92d20; }
-.card button.primary { max-width: 100%; }
 
-@media(max-width:600px) {
-  .card {
-    margin: 15px;
-    padding: 20px;
-  }
-  .score { font-size: 44px; }
+.center { text-align: center; }
+.hidden { display: none; }
+.error { color: #dc2626; }
+.score { font-size: 52px; font-weight: bold; color: #2563eb; }
+.emoji { font-size: 45px; margin: 12px 0; }
+.notice { background: #eff6ff; padding: 12px; border-radius: 12px; }
+
+@media (max-width: 500px) {
+  .card { padding: 20px; margin: 8px auto; }
+  h1 { font-size: 24px; }
+  h2 { font-size: 20px; }
 }
 </style>
 </head>
@@ -97,229 +113,343 @@ button:disabled {
 <body>
 
 <div class="card" id="start">
-  <h1>🔬 Kuis Sains Kelas 1</h1>
-  <p class="muted">20 soal • 5 poin per soal • Nilai maksimal 100</p>
-  <p><b>Nama peserta</b></p>
-  <input id="name" placeholder="Masukkan nama kamu" maxlength="100">
-  <p id="error" class="error"></p>
-  <button class="primary" id="startButton" onclick="startQuiz()">
-    Mulai Kuis
-  </button>
+  <div class="emoji">🧠🔢</div>
+  <h1>Kuis Logika Matematika</h1>
+  <p class="muted">Untuk anak SD kelas 1–2</p>
+
+  <div class="notice">
+    ⭐ 20 soal pilihan ganda<br>
+    🌈 Setiap jawaban benar mendapat 5 poin<br>
+    🏆 Nilai tertinggi 100
+  </div>
+
+  <p><b>Siapa namamu?</b></p>
+  <input id="name" maxlength="100" placeholder="Tulis nama di sini">
+
+  <p id="startError" class="error"></p>
+  <button class="primary full" onclick="startQuiz()">Ayo Mulai! 🚀</button>
 </div>
 
 <div class="card hidden" id="quiz">
   <div class="top">
-    <b id="num"></b>
-    <span id="pts" class="muted"></span>
+    <b id="number"></b>
+    <b id="points">0 poin</b>
   </div>
+
   <div class="progress"><div class="bar" id="bar"></div></div>
-  <h2 id="q"></h2>
+
+  <div class="emoji" id="picture"></div>
+  <h2 id="question"></h2>
   <div id="choices"></div>
-  <button class="primary" id="next" disabled onclick="nextQuestion()">
-    Lanjut
-  </button>
+
+  <p class="muted" id="hint">Pilih satu jawaban yang benar, ya!</p>
+  <button class="primary full" id="next" disabled onclick="nextQuestion()">Lanjut ➜</button>
 </div>
 
 <div class="card center hidden" id="result">
-  <h1>🎉 Kuis Selesai!</h1>
+  <div class="emoji" id="resultEmoji">🎉</div>
+  <h1>Hebat! Kuis Selesai!</h1>
   <p id="resultName"></p>
   <div class="score" id="score"></div>
+  <p id="message"></p>
   <p id="detail" class="muted"></p>
-  <button class="primary" id="retryButton" onclick="restart()">
-    Ulangi Kuis
-  </button>
+  <p id="saveStatus" class="muted"></p>
+  <button class="primary full" id="retry" onclick="restart()">Main Lagi 🔄</button>
 </div>
 
 <script>
 const FORMSPREE_URL = "https://formspree.io/f/xeaerobg";
 
-const data = [
-  ["Bagian tubuh yang digunakan untuk melihat adalah ...", ["Telinga","Mata","Hidung","Tangan","Kaki"], "Mata"],
-  ["Kita menggunakan telinga untuk ...", ["Melihat","Berjalan","Mendengar","Mencium","Memegang"], "Mendengar"],
-  ["Hidung berguna untuk ...", ["Mendengar suara","Melihat benda","Mencium bau","Berjalan","Menulis"], "Mencium bau"],
-  ["Bagian tubuh yang digunakan untuk berjalan adalah ...", ["Mata","Telinga","Hidung","Kaki","Mulut"], "Kaki"],
-  ["Berikut yang termasuk makhluk hidup adalah ...", ["Batu","Meja","Kucing","Kursi","Pensil"], "Kucing"],
-  ["Berikut yang termasuk benda tak hidup adalah ...", ["Ayam","Pohon","Ikan","Sepeda","Kucing"], "Sepeda"],
-  ["Salah satu ciri makhluk hidup adalah ...", ["Bernapas","Tidak tumbuh","Tidak membutuhkan air","Tidak membutuhkan makanan","Selalu diam"], "Bernapas"],
-  ["Manusia membutuhkan ... untuk hidup.", ["Batu","Makanan","Pensil","Meja","Sepatu"], "Makanan"],
-  ["Tumbuhan membutuhkan ... untuk hidup.", ["Air","Buku","Tas","Sepeda","Bola"], "Air"],
-  ["Ikan hidup di ...", ["Tanah","Air","Lemari","Meja","Atap"], "Air"],
-  ["Bagian tumbuhan yang berada di dalam tanah adalah ...", ["Daun","Bunga","Buah","Akar","Batang"], "Akar"],
-  ["Bagian tumbuhan yang biasanya berwarna hijau adalah ...", ["Daun","Akar","Biji","Buah","Bunga"], "Daun"],
-  ["Bagian tumbuhan yang menopang daun adalah ...", ["Akar","Batang","Bunga","Buah","Biji"], "Batang"],
-  ["Saat air turun dari langit, cuacanya disebut ...", ["Cerah","Panas","Hujan","Berangin","Dingin"], "Hujan"],
-  ["Saat matahari bersinar terang dan langit tidak tertutup awan, cuacanya ...", ["Hujan","Cerah","Badai","Gelap","Mendung"], "Cerah"],
-  ["Sumber cahaya alami adalah ...", ["Lampu","Lilin","Senter","Matahari","Televisi"], "Matahari"],
-  ["Contoh sumber bunyi adalah ...", ["Matahari","Lampu","Drum","Buku","Meja"], "Drum"],
-  ["Agar gigi tetap bersih, kita harus ...", ["Jarang mandi","Menyikat gigi","Bermain di tempat sampah","Tidak mencuci tangan","Memakai pakaian kotor"], "Menyikat gigi"],
-  ["Sebelum makan, sebaiknya kita ...", ["Mencuci tangan","Bermain tanah","Tidur","Membuang makanan","Berlari"], "Mencuci tangan"],
-  ["Sampah sebaiknya dibuang ke ...", ["Sungai","Jalan","Halaman","Selokan","Tempat sampah"], "Tempat sampah"]
+const questions = [
+  {
+    q: "Angka apa yang tepat untuk melanjutkan pola ini?",
+    pic: "🔢  1, 2, 3, 4, ...",
+    options: ["5", "7", "2", "9"],
+    answer: 0
+  },
+  {
+    q: "Ada 🍎🍎🍎. Ibu memberi 2 apel lagi. Berapa jumlah apel sekarang?",
+    pic: "🍎 🍎 🍎 + 🍎 🍎",
+    options: ["4 apel", "6 apel", "5 apel", "3 apel"],
+    answer: 2
+  },
+  {
+    q: "Pola warna ini berulang. Lingkaran apa yang berikutnya?",
+    pic: "🔴 🔵 🔴 🔵 🔴 ...",
+    options: ["🟢", "🔴", "🟡", "🔵"],
+    answer: 3
+  },
+  {
+    q: "Budi punya 7 permen. Ia memberikan 3 permen kepada adiknya. Berapa sisa permen Budi?",
+    pic: "🍬 🍬 🍬 🍬 🍬 🍬 🍬",
+    options: ["5", "3", "4", "10"],
+    answer: 2
+  },
+  {
+    q: "Hewan mana yang memiliki jumlah kaki lebih banyak?",
+    pic: "🐱 atau 🐔",
+    options: ["Kucing, 4 kaki", "Ayam, 2 kaki", "Sama banyak", "Keduanya tidak berkaki"],
+    answer: 0
+  },
+  {
+    q: "Lengkapi pola bilangan berikut!",
+    pic: "2, 4, 6, 8, ...",
+    options: ["9", "10", "12", "11"],
+    answer: 1
+  },
+  {
+    q: "Ada 5 burung di pohon. Datang 2 burung lagi. Berapa jumlah burung semuanya?",
+    pic: "🐦 🐦 🐦 🐦 🐦 + 🐦 🐦",
+    options: ["6", "8", "7", "3"],
+    answer: 2
+  },
+  {
+    q: "Manakah yang nilainya paling besar?",
+    pic: "🔎 Bandingkan angka berikut",
+    options: ["6", "9", "4", "7"],
+    answer: 1
+  },
+  {
+    q: "Lengkapi pola berikut: 10, 9, 8, 7, ...",
+    pic: "⬇️ Angkanya semakin kecil",
+    options: ["6", "8", "5", "9"],
+    answer: 0
+  },
+  {
+    q: "Rina punya 3 boneka. Siti punya 5 boneka. Siapa yang memiliki boneka lebih banyak?",
+    pic: "🧸 🧸 🧸  |  🧸 🧸 🧸 🧸 🧸",
+    options: ["Rina", "Jumlahnya sama", "Tidak ada", "Siti"],
+    answer: 3
+  },
+  {
+    q: "Ada 4 kotak. Setiap kotak berisi 1 bola. Berapa jumlah bola semuanya?",
+    pic: "📦 📦 📦 📦",
+    options: ["3", "5", "4", "8"],
+    answer: 2
+  },
+  {
+    q: "Bentuk apa yang berbeda dari yang lain?",
+    pic: "🔺 🔺 🔵 🔺",
+    options: ["🔺 pertama", "🔺 kedua", "🔺 terakhir", "🔵"],
+    answer: 3
+  },
+  {
+    q: "Doni memiliki 8 kelereng. Ia mendapat 2 lagi. Berapa jumlah kelereng Doni?",
+    pic: "🔵 + 🔵 🔵",
+    options: ["10", "6", "9", "12"],
+    answer: 0
+  },
+  {
+    q: "Angka berapa yang hilang?",
+    pic: "3, 4, __, 6, 7",
+    options: ["2", "8", "5", "9"],
+    answer: 2
+  },
+  {
+    q: "Di meja ada 6 pisang dan 2 jeruk. Buah mana yang jumlahnya lebih sedikit?",
+    pic: "🍌 🍌 🍌 🍌 🍌 🍌   🍊 🍊",
+    options: ["Pisang", "Jeruk", "Jumlahnya sama", "Tidak ada buah"],
+    answer: 1
+  },
+  {
+    q: "Sekarang hari Senin. Besok adalah hari ...",
+    pic: "📅 Senin → ?",
+    options: ["Minggu", "Jumat", "Rabu", "Selasa"],
+    answer: 3
+  },
+  {
+    q: "Lengkapi pola ini!",
+    pic: "5, 10, 15, ...",
+    options: ["16", "25", "20", "18"],
+    answer: 2
+  },
+  {
+    q: "Ada 9 ikan di kolam. 4 ikan berenang ke kolam lain. Berapa ikan yang tersisa?",
+    pic: "🐟 🐟 🐟 🐟 🐟 🐟 🐟 🐟 🐟",
+    options: ["5", "4", "6", "13"],
+    answer: 0
+  },
+  {
+    q: "Manakah yang memiliki bentuk paling berbeda?",
+    pic: "⭐ ⭐ ❤️ ⭐",
+    options: ["Bintang pertama", "Bintang kedua", "Bintang ketiga", "Hati ❤️"],
+    answer: 3
+  },
+  {
+    q: "Ani punya 4 pensil merah dan 3 pensil biru. Berapa jumlah pensil Ani?",
+    pic: "✏️✏️✏️✏️ + 🖊️🖊️🖊️",
+    options: ["6", "7", "8", "1"],
+    answer: 1
+  }
 ];
 
-let i = 0;
+let current = 0;
 let correct = 0;
 let selected = null;
-let name = "";
+let playerName = "";
 let answers = [];
-let saving = false;
+let submitting = false;
+let quizStartedAt = null;
 
 const $ = id => document.getElementById(id);
 
 function startQuiz() {
-  name = $("name").value.trim();
+  playerName = $("name").value.trim();
 
-  if (!name) {
-    $("error").textContent = "Isi nama dulu ya!";
+  if (!playerName) {
+    $("startError").textContent = "Tulis namamu dulu, ya! 😊";
     $("name").focus();
     return;
   }
 
-  $("error").textContent = "";
-  i = 0;
+  current = 0;
   correct = 0;
   selected = null;
   answers = [];
-  saving = false;
+  submitting = false;
+  quizStartedAt = new Date();
 
   $("start").classList.add("hidden");
   $("result").classList.add("hidden");
   $("quiz").classList.remove("hidden");
 
-  render();
+  renderQuestion();
 }
 
-function render() {
+function renderQuestion() {
   selected = null;
+  const item = questions[current];
+
+  $("number").textContent = `Soal ${current + 1} dari ${questions.length}`;
+  $("points").textContent = `${correct * 5} poin`;
+  $("bar").style.width = `${((current + 1) / questions.length) * 100}%`;
+  $("picture").textContent = item.pic;
+  $("question").textContent = item.q;
+  $("hint").textContent = "Pilih satu jawaban yang benar, ya!";
   $("next").disabled = true;
+  $("next").textContent =
+    current === questions.length - 1 ? "Lihat Nilai 🏆" : "Lanjut ➜";
 
-  const soal = data[i];
+  $("choices").replaceChildren();
 
-  $("num").textContent = `Soal ${i + 1} dari ${data.length}`;
-  $("pts").textContent = `${correct * 5} poin`;
-  $("bar").style.width = `${(i + 1) / data.length * 100}%`;
-  $("q").textContent = soal[0];
-  $("choices").innerHTML = "";
+  item.options.forEach((option, index) => {
+    const button = document.createElement("button");
+    button.className = "choice";
+    button.textContent = `${String.fromCharCode(65 + index)}. ${option}`;
 
-  soal[1].forEach((pilihan, index) => {
-    const tombol = document.createElement("button");
-
-    tombol.type = "button";
-    tombol.className = "choice";
-    tombol.textContent = `${String.fromCharCode(65 + index)}. ${pilihan}`;
-
-    tombol.onclick = () => {
-      selected = pilihan;
+    button.onclick = () => {
+      selected = index;
 
       document.querySelectorAll(".choice").forEach(el => {
         el.classList.remove("selected");
       });
 
-      tombol.classList.add("selected");
+      button.classList.add("selected");
       $("next").disabled = false;
     };
 
-    $("choices").appendChild(tombol);
+    $("choices").appendChild(button);
   });
-
-  $("next").textContent =
-    i === data.length - 1 ? "Selesai" : "Lanjut";
 }
 
 async function nextQuestion() {
-  if (selected === null || saving) return;
+  if (selected === null || submitting) return;
 
-  const soal = data[i];
-  const jawabanBenar = selected === soal[2];
+  const item = questions[current];
+  const isCorrect = selected === item.answer;
+
+  if (isCorrect) correct++;
 
   answers.push({
-    question: soal[0],
-    selected: selected,
-    key: soal[2],
-    isCorrect: jawabanBenar ? "Benar" : "Salah"
+    nomor: current + 1,
+    soal: item.q,
+    jawaban: item.options[selected],
+    kunci: item.options[item.answer],
+    hasil: isCorrect ? "Benar" : "Salah"
   });
 
-  if (jawabanBenar) correct++;
-
-  if (i < data.length - 1) {
-    i++;
-    render();
+  if (current < questions.length - 1) {
+    current++;
+    renderQuestion();
   } else {
     await finishQuiz();
   }
 }
 
 async function finishQuiz() {
-  if (saving) return;
-  saving = true;
-
+  submitting = true;
   $("quiz").classList.add("hidden");
   $("result").classList.remove("hidden");
-  $("resultName").textContent = "Nama: " + name;
-  $("score").textContent = (correct * 5) + "/100";
-  $("detail").textContent =
-    `Benar ${correct} soal • Salah ${data.length - correct} soal • Mengirim hasil...`;
 
-  $("retryButton").disabled = true;
+  const score = correct * 5;
+  $("resultName").textContent = `Nama peserta: ${playerName}`;
+  $("score").textContent = `${score}/100`;
+
+  $("resultEmoji").textContent =
+    score >= 80 ? "🏆" : score >= 50 ? "🌟" : "💪";
+
+  $("message").textContent =
+    score >= 80 ? "Wah, hebat sekali! Kamu luar biasa!" :
+    score >= 50 ? "Bagus! Terus berlatih, ya!" :
+    "Jangan menyerah! Yuk, belajar dan coba lagi!";
+
+  $("detail").textContent =
+    `Benar ${correct} soal dan salah ${questions.length - correct} soal.`;
+
+  $("saveStatus").textContent = "Sedang menyimpan hasil...";
+  $("retry").disabled = true;
 
   try {
-    const formData = new FormData();
-
-    // Waktu lokal Indonesia Barat (WIB, UTC+7)
+    // Format waktu berdasarkan zona WIB.
     const waktuWIB = new Intl.DateTimeFormat("id-ID", {
       timeZone: "Asia/Jakarta",
       dateStyle: "medium",
-      timeStyle: "medium"
+      timeStyle: "medium",
+      hour12: false
     }).format(new Date());
 
-    // Data hasil kuis
+    const durasiDetik = Math.round(
+      (Date.now() - quizStartedAt.getTime()) / 1000
+    );
+
+    const formData = new FormData();
     formData.append("Waktu Kuis (WIB)", waktuWIB);
-    formData.append("Nama", name);
-    formData.append("Nilai", String(correct * 5));
+    formData.append("Nama", playerName);
+    formData.append("Nilai", String(score));
     formData.append("Jumlah benar", String(correct));
-    formData.append("Jumlah salah", String(data.length - correct));
+    formData.append("Jumlah salah", String(questions.length - correct));
+    formData.append("Durasi (detik)", String(durasiDetik));
     formData.append("Detail jawaban", JSON.stringify(answers, null, 2));
-    formData.append("_subject", "Hasil Kuis Sains - " + name);
+    formData.append("_subject", "Hasil Kuis Logika Matematika - " + playerName);
 
     const response = await fetch(FORMSPREE_URL, {
       method: "POST",
-      body: formData,
-      headers: {
-        "Accept": "application/json"
-      }
+      headers: { "Accept": "application/json" },
+      body: formData
     });
 
     if (!response.ok) {
-      let pesan = "HTTP " + response.status;
-
-      try {
-        const hasilError = await response.json();
-        if (hasilError.errors) {
-          pesan = hasilError.errors.map(e => e.message).join(", ");
-        }
-      } catch (_) {}
-
-      throw new Error(pesan);
+      throw new Error("Pengiriman gagal: HTTP " + response.status);
     }
 
-    $("detail").textContent =
-      `Benar ${correct} soal • Salah ${data.length - correct} soal • Hasil berhasil dikirim!`;
-
+    $("saveStatus").textContent = "✅ Hasil berhasil dikirim!";
   } catch (error) {
-    console.error("Gagal mengirim hasil:", error);
-
-    $("detail").textContent =
-      `Benar ${correct} soal • Salah ${data.length - correct} soal • Pengiriman gagal. Coba lagi dengan mengulangi kuis.`;
+    console.error(error);
+    $("saveStatus").textContent =
+      "⚠️ Hasil belum berhasil dikirim. Periksa koneksi internet lalu coba lagi.";
   }
 
-  $("retryButton").disabled = false;
+  $("retry").disabled = false;
+  submitting = false;
 }
 
 function restart() {
-  if (saving) return;
+  if (submitting) return;
 
-  $("name").value = name;
   $("result").classList.add("hidden");
   $("start").classList.remove("hidden");
+  $("name").value = playerName;
+  $("startError").textContent = "";
 }
 </script>
 
