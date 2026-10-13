@@ -218,15 +218,6 @@ function restart() {
     $("result").classList.add("hidden");
     $("start").classList.remove("hidden");
 }
-
-const $=x=>document.getElementById(x);
-function startQuiz(){
- name=$("name").value.trim();
- if(!name){$("error").textContent="Isi nama dulu ya!";return}
- $("error").textContent="";i=0;correct=0;
- $("start").classList.add("hidden");$("result").classList.add("hidden");$("quiz").classList.remove("hidden");
-render();
-}
 function render(){
  selected=null;$("next").disabled=true;
  let x=data[i];
