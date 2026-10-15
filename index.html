@@ -1,706 +1,226 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kuis LOGMAT - Logika Anak</title>
-
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      padding: 20px;
-      font-family: Arial, sans-serif;
-      background: #eef4ff;
-      color: #20304a;
-    }
-
-    .container {
-      max-width: 720px;
-      margin: 20px auto;
-      background: white;
-      padding: 24px;
-      border-radius: 20px;
-      box-shadow: 0 5px 24px #20304a18;
-    }
-
-    h1 {
-      text-align: center;
-      color: #2459b3;
-      margin-bottom: 8px;
-    }
-
-    .subtitle {
-      text-align: center;
-      color: #66758b;
-      margin-bottom: 24px;
-      line-height: 1.6;
-    }
-
-    .hidden {
-      display: none !important;
-    }
-
-    label {
-      display: block;
-      font-weight: bold;
-      margin: 16px 0 8px;
-    }
-
-    input[type="text"] {
-      width: 100%;
-      padding: 13px;
-      border: 1px solid #cbd5e1;
-      border-radius: 10px;
-      font-size: 16px;
-    }
-
-    button {
-      border: none;
-      padding: 13px 18px;
-      border-radius: 10px;
-      background: #2459b3;
-      color: white;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    button:disabled {
-      opacity: 0.55;
-      cursor: not-allowed;
-    }
-
-    .main-button {
-      width: 100%;
-      margin-top: 20px;
-    }
-
-    .progress-row {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      font-size: 14px;
-      color: #52627a;
-      margin-bottom: 10px;
-    }
-
-    .progress-track {
-      height: 8px;
-      background: #e3eaf5;
-      border-radius: 20px;
-      overflow: hidden;
-      margin-bottom: 24px;
-    }
-
-    .progress-bar {
-      height: 100%;
-      width: 0;
-      background: #3978e5;
-      transition: width 0.2s;
-    }
-
-    .category {
-      display: inline-block;
-      background: #e5efff;
-      color: #2459b3;
-      padding: 6px 10px;
-      border-radius: 20px;
-      font-size: 13px;
-      font-weight: bold;
-      margin-bottom: 12px;
-    }
-
-    .question {
-      font-size: 21px;
-      line-height: 1.6;
-      font-weight: bold;
-      margin: 6px 0 20px;
-      white-space: pre-line;
-    }
-
-    .options {
-      display: grid;
-      gap: 11px;
-    }
-
-    .option {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      border: 2px solid #dbe4f0;
-      border-radius: 12px;
-      padding: 14px;
-      cursor: pointer;
-      line-height: 1.5;
-      background: white;
-    }
-
-    .option:has(input:checked) {
-      border-color: #3978e5;
-      background: #f0f6ff;
-    }
-
-    .option input {
-      width: 18px;
-      height: 18px;
-      flex-shrink: 0;
-    }
-
-    .nav-buttons {
-      display: flex;
-      gap: 10px;
-      margin-top: 24px;
-    }
-
-    .nav-buttons button {
-      flex: 1;
-    }
-
-    .secondary {
-      background: #e5eaf2;
-      color: #26364e;
-    }
-
-    .score {
-      text-align: center;
-      font-size: 48px;
-      color: #2459b3;
-      font-weight: bold;
-      margin: 20px 0 8px;
-    }
-
-    .result-info {
-      background: #f2f6fc;
-      padding: 16px;
-      border-radius: 12px;
-      line-height: 1.8;
-      margin: 20px 0;
-    }
-
-    .review-item {
-      border-bottom: 1px solid #e2e8f0;
-      padding: 15px 0;
-      line-height: 1.6;
-    }
-
-    .correct {
-      color: #187744;
-    }
-
-    .wrong {
-      color: #bd3434;
-    }
-
-    .notice {
-      color: #66758b;
-      font-size: 13px;
-      line-height: 1.6;
-      margin-top: 14px;
-    }
-
-    @media (max-width: 480px) {
-      body {
-        padding: 10px;
-      }
-
-      .container {
-        padding: 18px;
-        margin: 5px auto;
-      }
-
-      .question {
-        font-size: 19px;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kuis LOGMAT Kelas 1–2 SD</title>
+<style>
+:root{--blue:#174ea6;--blue2:#2563eb;--pale:#eff6ff;--ink:#172033;--muted:#64748b;--line:#dbe4f0;--green:#15803d;--red:#b91c1c}
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(135deg,#eff6ff,#f8fafc 55%,#eef2ff);font-family:Arial,Helvetica,sans-serif;color:var(--ink);line-height:1.55}
+.wrap{max-width:820px;margin:0 auto;padding:20px 14px 40px}
+header{background:linear-gradient(135deg,#173f8a,#2563eb);color:#fff;padding:25px 22px;border-radius:22px;margin-bottom:18px;box-shadow:0 10px 28px #1e40af22}
+header h1{margin:0 0 6px;font-size:clamp(24px,5vw,34px)}header p{margin:0;color:#e0ecff}
+.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px;margin-bottom:16px;box-shadow:0 6px 20px #0f172a08}
+label{display:block;font-weight:700;margin-bottom:7px}
+input[type=text]{width:100%;padding:13px 14px;border:1px solid #b8c6d9;border-radius:11px;font-size:16px}
+button{border:0;border-radius:12px;background:var(--blue2);color:#fff;padding:12px 18px;font-size:16px;font-weight:700;cursor:pointer}
+button:disabled{opacity:.55;cursor:not-allowed}.secondary{background:#e8efff;color:#174ea6}.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between}
+.progress{height:9px;background:#e5eaf2;border-radius:99px;overflow:hidden;margin:12px 0 18px}.bar{height:100%;width:0;background:#3b82f6;transition:width .2s}
+.meta{color:var(--muted);font-size:14px}.question{font-size:21px;font-weight:700;margin:10px 0 18px}
+.options{display:grid;gap:10px}.option{display:flex;align-items:center;gap:12px;padding:13px 14px;border:1px solid var(--line);border-radius:12px;cursor:pointer;background:#fff}.option:hover{background:#f8fbff;border-color:#93b4f8}.option input{width:18px;height:18px;accent-color:var(--blue2);flex-shrink:0}
+.hidden{display:none!important}.status{font-weight:700;margin-top:12px}.result-score{font-size:42px;font-weight:800;color:var(--blue);margin:4px 0}.review-item{border-top:1px solid var(--line);padding:14px 0}.good{color:var(--green)}.bad{color:var(--red)}.review-item p{margin:5px 0}.pill{display:inline-block;background:#e8efff;color:#174ea6;padding:4px 9px;border-radius:99px;font-size:13px;font-weight:700}
+@media(max-width:520px){.card{padding:17px}.question{font-size:19px}.row button{flex:1}}
+</style>
 </head>
-
 <body>
-  <main class="container">
-
-    <section id="startScreen">
-      <h1>🧠 Kuis LOGMAT</h1>
-      <p class="subtitle">
-        Tantangan Logika dan Penalaran Anak SD<br>
-        Kelas 1–2
-      </p>
-
-      <p>
-        Yuk, latih kemampuan berpikir dengan soal pola,
-        gambar, logika, puzzle, dan pemecahan masalah!
-      </p>
-
-      <p>📌 20 soal pilihan ganda</p>
-      <p>⭐ Setiap jawaban benar bernilai 5 poin</p>
-      <p>🏆 Nilai maksimal 100</p>
-
-      <label for="playerName">Nama peserta</label>
-      <input
-        id="playerName"
-        type="text"
-        maxlength="80"
-        placeholder="Masukkan nama lengkap"
-        autocomplete="name"
-      >
-
-      <button class="main-button" id="startButton" type="button">
-        Mulai Kuis
-      </button>
-
-      <p class="notice">
-        Pastikan nama sudah benar sebelum mulai.
-      </p>
-    </section>
-
-    <section id="quizScreen" class="hidden">
-      <div class="progress-row">
-        <span id="questionCounter">Soal 1 dari 20</span>
-        <span id="playerLabel"></span>
-      </div>
-
-      <div class="progress-track">
-        <div class="progress-bar" id="progressBar"></div>
-      </div>
-
-      <div class="category" id="category"></div>
-      <div class="question" id="questionText"></div>
-      <div class="options" id="options"></div>
-
-      <div class="nav-buttons">
-        <button class="secondary" id="prevButton" type="button">
-          Sebelumnya
-        </button>
-        <button id="nextButton" type="button">
-          Berikutnya
-        </button>
-      </div>
-
-      <p class="notice">
-        Pilih satu jawaban untuk setiap soal. Periksa jawabanmu
-        sebelum mengakhiri kuis.
-      </p>
-    </section>
-
-    <section id="resultScreen" class="hidden">
-      <h1>🎉 Kuis Selesai!</h1>
-      <p class="subtitle" id="resultGreeting"></p>
-
-      <div class="score" id="finalScore">0</div>
-      <p class="subtitle">Nilai akhir dari 100</p>
-
-      <div class="result-info" id="resultInfo"></div>
-
-      <h2>Review Jawaban</h2>
-      <div id="review"></div>
-
-      <p id="submitStatus" class="notice">
-        Mengirim hasil kuis...
-      </p>
-
-      <button class="main-button" id="retryButton" type="button">
-        Kembali ke Awal
-      </button>
-    </section>
-
-  </main>
-
-  <script>
-    // Ganti endpoint ini hanya jika Formspree lu berbeda.
-    const FORMSPREE_ENDPOINT =
-      "https://formspree.io/f/xeaerobg";
-
-    const questions = [
-      {
-        category: "Pola Bilangan",
-        q: "Perhatikan urutan angka berikut:\n2, 4, 6, 8, ...\nAngka selanjutnya adalah ...",
-        options: ["9", "10", "11", "12"],
-        answer: 1
-      },
-      {
-        category: "Pola Bilangan",
-        q: "Perhatikan urutan berikut:\n10, 9, 8, 7, ...\nAngka selanjutnya adalah ...",
-        options: ["4", "5", "6", "8"],
-        answer: 2
-      },
-      {
-        category: "Pola Gambar",
-        q: "Perhatikan pola berikut:\n🔴 🔵 🔴 🔵 🔴 ...\nGambar selanjutnya adalah ...",
-        options: ["🔴", "🔵", "🟢", "⭐"],
-        answer: 1
-      },
-      {
-        category: "Pola Gambar",
-        q: "Perhatikan pola berikut:\n⭐ ⭐ 🌙 ⭐ ⭐ 🌙 ...\nGambar berikutnya adalah ...",
-        options: ["🌙", "❤️", "⭐", "🔺"],
-        answer: 2
-      },
-      {
-        category: "Logika Matematika",
-        q: "Semua apel berwarna merah. Buah di tangan Rina adalah apel. Menurut informasi itu, buah Rina berwarna ...",
-        options: ["Biru", "Merah", "Hijau", "Ungu"],
-        answer: 1
-      },
-      {
-        category: "Logika Matematika",
-        q: "Budi lebih tinggi daripada Andi. Andi lebih tinggi daripada Riko. Siapa yang paling pendek?",
-        options: ["Budi", "Andi", "Riko", "Semuanya sama"],
-        answer: 2
-      },
-      {
-        category: "Penalaran",
-        q: "Semua ikan hidup di air. Hewan peliharaan Dika adalah ikan. Berdasarkan informasi itu, hewan Dika hidup di ...",
-        options: ["Pohon", "Air", "Atap", "Tanah kering"],
-        answer: 1
-      },
-      {
-        category: "Penalaran",
-        q: "Hari ini hari Selasa. Dua hari lagi adalah hari ...",
-        options: ["Rabu", "Kamis", "Jumat", "Sabtu"],
-        answer: 1
-      },
-      {
-        category: "Analisis",
-        q: "Di meja ada 3 apel dan 2 jeruk. Berapa jumlah seluruh buah di meja?",
-        options: ["3", "4", "5", "6"],
-        answer: 2
-      },
-      {
-        category: "Analisis",
-        q: "Ada 6 burung di pohon. Lalu 2 burung terbang pergi. Berapa burung yang masih di pohon?",
-        options: ["2", "3", "4", "8"],
-        answer: 2
-      },
-      {
-        category: "Puzzle",
-        q: "Aku adalah angka lebih besar dari 4 tetapi lebih kecil dari 6. Siapakah aku?",
-        options: ["3", "4", "5", "6"],
-        answer: 2
-      },
-      {
-        category: "Puzzle",
-        q: "Ada 3 kotak. Setiap kotak berisi 2 bola. Berapa jumlah semua bola?",
-        options: ["3", "5", "6", "9"],
-        answer: 2
-      },
-      {
-        category: "Pemecahan Masalah",
-        q: "Siti punya 5 permen. Ibu memberinya 3 permen lagi. Berapa permen Siti sekarang?",
-        options: ["7", "8", "9", "10"],
-        answer: 1
-      },
-      {
-        category: "Pemecahan Masalah",
-        q: "Ada 8 pensil yang akan dibagikan sama banyak kepada 2 anak. Setiap anak mendapat ...",
-        options: ["2 pensil", "3 pensil", "4 pensil", "6 pensil"],
-        answer: 2
-      },
-      {
-        category: "Logika Visual",
-        q: "Perhatikan gambar berikut:\n🔺 🔺 🔵 🔺\nGambar yang berbeda bentuk adalah ...",
-        options: ["🔺 pertama", "🔺 kedua", "🔵 ketiga", "🔺 keempat"],
-        answer: 2
-      },
-      {
-        category: "Logika Visual",
-        q: "Perhatikan gambar berikut:\n🐱 🐱 🐶 🐱 🐱\nGambar yang seharusnya muncul di tengah pola agar menjadi berulang adalah ...",
-        options: ["🐱", "🐶", "🐰", "🐟"],
-        answer: 1
-      },
-      {
-        category: "Pola Bilangan",
-        q: "Lengkapi urutan ini:\n1, 3, 5, 7, ...",
-        options: ["8", "9", "10", "11"],
-        answer: 1
-      },
-      {
-        category: "Penalaran",
-        q: "Lala datang sebelum Nia. Nia datang sebelum Sasa. Siapa yang datang paling akhir?",
-        options: ["Lala", "Nia", "Sasa", "Tidak bisa diketahui"],
-        answer: 2
-      },
-      {
-        category: "Puzzle",
-        q: "Ada 4 kaki meja. Jika ada 2 meja yang sama, berapa jumlah seluruh kaki meja?",
-        options: ["4", "6", "8", "10"],
-        answer: 2
-      },
-      {
-        category: "Pemecahan Masalah",
-        q: "Di dalam keranjang ada 4 mangga. Ayah menambah 2 mangga, lalu Ibu mengambil 1 mangga. Berapa mangga yang tersisa?",
-        options: ["4", "5", "6", "7"],
-        answer: 1
-      }
-    ];
-
-    const startScreen = document.getElementById("startScreen");
-    const quizScreen = document.getElementById("quizScreen");
-    const resultScreen = document.getElementById("resultScreen");
-
-    const playerNameInput = document.getElementById("playerName");
-    const startButton = document.getElementById("startButton");
-    const prevButton = document.getElementById("prevButton");
-    const nextButton = document.getElementById("nextButton");
-    const retryButton = document.getElementById("retryButton");
-
-    let playerName = "";
-    let currentQuestion = 0;
-    let answers = [];
-    let quizStartedAt = null;
-    let submitting = false;
-
-    function showScreen(screen) {
-      startScreen.classList.add("hidden");
-      quizScreen.classList.add("hidden");
-      resultScreen.classList.add("hidden");
-      screen.classList.remove("hidden");
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-
-    function startQuiz() {
-      playerName = playerNameInput.value.trim();
-
-      if (!playerName) {
-        alert("Masukkan nama terlebih dahulu, bro!");
-        playerNameInput.focus();
-        return;
-      }
-
-      currentQuestion = 0;
-      answers = Array(questions.length).fill(null);
-      quizStartedAt = Date.now();
-
-      document.getElementById("playerLabel").textContent =
-        playerName;
-
-      showScreen(quizScreen);
-      renderQuestion();
-    }
-
-    function renderQuestion() {
-      const item = questions[currentQuestion];
-
-      document.getElementById("questionCounter").textContent =
-        `Soal ${currentQuestion + 1} dari ${questions.length}`;
-
-      document.getElementById("progressBar").style.width =
-        `${((currentQuestion + 1) / questions.length) * 100}%`;
-
-      document.getElementById("category").textContent =
-        item.category;
-
-      document.getElementById("questionText").textContent =
-        item.q;
-
-      const optionsContainer = document.getElementById("options");
-      optionsContainer.replaceChildren();
-
-      item.options.forEach((option, index) => {
-        const label = document.createElement("label");
-        label.className = "option";
-
-        const radio = document.createElement("input");
-        radio.type = "radio";
-        radio.name = "answer";
-        radio.value = index;
-        radio.checked = answers[currentQuestion] === index;
-
-        radio.addEventListener("change", () => {
-          answers[currentQuestion] = index;
-        });
-
-        const text = document.createElement("span");
-        text.textContent =
-          `${String.fromCharCode(65 + index)}. ${option}`;
-
-        label.append(radio, text);
-        optionsContainer.appendChild(label);
-      });
-
-      prevButton.disabled = currentQuestion === 0;
-
-      nextButton.textContent =
-        currentQuestion === questions.length - 1
-          ? "Selesai & Lihat Nilai"
-          : "Berikutnya";
-    }
-
-    function moveNext() {
-      if (answers[currentQuestion] === null) {
-        alert("Pilih jawaban dulu, bro!");
-        return;
-      }
-
-      if (currentQuestion < questions.length - 1) {
-        currentQuestion++;
-        renderQuestion();
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      } else {
-        const unanswered = answers.findIndex(
-          answer => answer === null
-        );
-
-        if (unanswered !== -1) {
-          currentQuestion = unanswered;
-          renderQuestion();
-          alert("Masih ada soal yang belum dijawab.");
-          return;
-        }
-
-        finishQuiz();
-      }
-    }
-
-    function movePrevious() {
-      if (currentQuestion > 0) {
-        currentQuestion--;
-        renderQuestion();
-      }
-    }
-
-    function getWIBTime() {
-      return new Intl.DateTimeFormat("id-ID", {
-        timeZone: "Asia/Jakarta",
-        dateStyle: "medium",
-        timeStyle: "medium",
-        hour12: false
-      }).format(new Date());
-    }
-
-    async function finishQuiz() {
-      if (submitting) return;
-      submitting = true;
-      nextButton.disabled = true;
-      prevButton.disabled = true;
-
-      const correctCount = answers.reduce(
-        (total, answer, index) =>
-          total + (answer === questions[index].answer ? 1 : 0),
-        0
-      );
-
-      const wrongCount = questions.length - correctCount;
-      const score = correctCount * 5;
-      const durationSeconds = Math.round(
-        (Date.now() - quizStartedAt) / 1000
-      );
-
-      showScreen(resultScreen);
-
-      document.getElementById("resultGreeting").textContent =
-        `Hebat, ${playerName}! Kamu sudah menyelesaikan kuis.`;
-
-      document.getElementById("finalScore").textContent = score;
-
-      document.getElementById("resultInfo").textContent =
-        `Nama: ${playerName}\n` +
-        `Jumlah benar: ${correctCount} soal\n` +
-        `Jumlah salah: ${wrongCount} soal\n` +
-        `Total soal: ${questions.length}\n` +
-        `Waktu pengerjaan: ${durationSeconds} detik`;
-
-      const review = document.getElementById("review");
-      review.replaceChildren();
-
-      questions.forEach((item, index) => {
-        const div = document.createElement("div");
-        div.className = "review-item";
-
-        const heading = document.createElement("strong");
-        heading.textContent = `${index + 1}. ${item.q}`;
-
-        const answerText = document.createElement("div");
-        const isCorrect = answers[index] === item.answer;
-        answerText.className = isCorrect ? "correct" : "wrong";
-
-        answerText.textContent =
-          `Jawabanmu: ${item.options[answers[index]]} — ` +
-          (isCorrect ? "Benar" : "Salah");
-
-        const correctText = document.createElement("div");
-        correctText.textContent =
-          `Jawaban yang benar: ${item.options[item.answer]}`;
-
-        div.append(heading, answerText, correctText);
-        review.appendChild(div);
-      });
-
-      document.getElementById("submitStatus").textContent =
-        "Sedang mengirim hasil ke server...";
-
-      const detail = questions.map((item, index) => ({
-        nomor: index + 1,
-        kategori: item.category,
-        soal: item.q,
-        jawaban_peserta:
-          item.options[answers[index]],
-        jawaban_benar:
-          item.options[item.answer],
-        benar: answers[index] === item.answer
-      }));
-
-      const formData = new FormData();
-      formData.append("Nama", playerName);
-      formData.append("Nilai", String(score));
-      formData.append("Jumlah benar", String(correctCount));
-      formData.append("Jumlah salah", String(wrongCount));
-      formData.append("Total soal", String(questions.length));
-      formData.append("Durasi (detik)", String(durationSeconds));
-      formData.append("Waktu Kuis (WIB)", getWIBTime());
-      formData.append("Detail jawaban", JSON.stringify(detail, null, 2));
-      formData.append("_subject", `Hasil Kuis LOGMAT - ${playerName}`);
-
-      try {
-        const response = await fetch(FORMSPREE_ENDPOINT, {
-          method: "POST",
-          body: formData,
-          headers: {
-            Accept: "application/json"
-          }
-        });
-
-        if (!response.ok) {
-          throw new Error("Pengiriman hasil gagal.");
-        }
-
-        document.getElementById("submitStatus").textContent =
-          "✅ Hasil kuis berhasil dikirim!";
-      } catch (error) {
-        document.getElementById("submitStatus").textContent =
-          "⚠️ Hasil tampil di sini, tetapi gagal dikirim. " +
-          "Periksa koneksi internet dan pengaturan Formspree.";
-      } finally {
-        submitting = false;
-        retryButton.disabled = false;
-      }
-    }
-
-    function resetQuiz() {
-      playerNameInput.value = "";
-      answers = [];
-      currentQuestion = 0;
-      quizStartedAt = null;
-      submitting = false;
-
-      startButton.disabled = false;
-      nextButton.disabled = false;
-      prevButton.disabled = false;
-      retryButton.disabled = false;
-
-      showScreen(startScreen);
-    }
-
-    startButton.addEventListener("click", startQuiz);
-    prevButton.addEventListener("click", movePrevious);
-    nextButton.addEventListener("click", moveNext);
-    retryButton.addEventListener("click", resetQuiz);
-
-    playerNameInput.addEventListener("keydown", event => {
-      if (event.key === "Enter") startQuiz();
+<div class="wrap">
+<header>
+  <h1>🧠 Kuis LOGMAT</h1>
+  <p>Latihan logika dan pemecahan masalah • Kelas 1–2 SD</p>
+</header>
+
+<section class="card" id="startScreen">
+  <span class="pill">20 soal baru</span>
+  <h2>Siap mengasah logika?</h2>
+  <p>Jawab setiap soal dengan teliti. Setiap jawaban benar bernilai 5 poin, dengan nilai maksimal 100.</p>
+  <label for="studentName">Nama peserta</label>
+  <input id="studentName" type="text" maxlength="80" placeholder="Tulis nama di sini">
+  <p class="meta">Pilih satu jawaban terbaik untuk setiap soal.</p>
+  <button id="startBtn">Mulai Kuis</button>
+</section>
+
+<section class="card hidden" id="quizScreen">
+  <div class="row"><span class="pill" id="questionCounter">Soal 1 dari 20</span><span class="meta" id="answeredCount">Terjawab 0/20</span></div>
+  <div class="progress"><div class="bar" id="progressBar"></div></div>
+  <div class="question" id="questionText"></div>
+  <div class="options" id="options"></div>
+  <div class="row" style="margin-top:22px">
+    <button class="secondary" id="prevBtn">← Sebelumnya</button>
+    <button id="nextBtn">Berikutnya →</button>
+  </div>
+  <p class="meta" id="navNote">Jawaban tersimpan saat kamu memilihnya.</p>
+</section>
+
+<section class="card hidden" id="resultScreen">
+  <span class="pill">Kuis selesai</span>
+  <h2 id="resultTitle">Hasil Kuis</h2>
+  <div class="result-score" id="scoreText">0/100</div>
+  <p id="summaryText"></p>
+  <p class="status" id="submitStatus" aria-live="polite">Sedang mengirim hasil...</p>
+  <div class="row" style="margin-top:18px">
+    <button class="secondary" id="reviewBtn">Lihat Pembahasan</button>
+    <button id="retryBtn">Ulangi Kuis</button>
+  </div>
+  <div id="reviewArea" class="hidden" style="margin-top:18px"></div>
+</section>
+</div>
+<script>
+const FORMSPREE_ENDPOINT = "https://formspree.io/f/xeaerobg";
+
+// Paket LOGMAT baru: cerita logika, urutan kegiatan, klasifikasi, strategi, dan penalaran.
+const questions = [
+ {q:"Di rak ada 3 buku merah dan 2 buku biru. Rani mengambil semua buku merah. Berapa buku yang masih ada di rak?",o:["1 buku","2 buku","3 buku","5 buku"],a:1,why:"Buku biru yang tersisa ada 2."},
+ {q:"Bimo berdiri di antara Sita dan Danu. Sita tidak berada di tengah. Siapa yang pasti berada di tengah?",o:["Sita","Bimo","Danu","Tidak bisa ditentukan"],a:1,why:"Kalimat pertama menyatakan Bimo berada di antara Sita dan Danu."},
+ {q:"Hari ini hari Selasa. Dua hari lagi adalah hari apa?",o:["Rabu","Kamis","Jumat","Sabtu"],a:1,why:"Sehari setelah Selasa adalah Rabu, dua hari setelahnya Kamis."},
+ {q:"Ada 4 anak mengantre. Lala berada paling depan dan Riko paling belakang. Siapa yang pasti berada di posisi kedua atau ketiga?",o:["Lala","Riko","Salah satu dari dua anak lainnya","Tidak ada anak lain"],a:2,why:"Dua anak yang bukan Lala atau Riko menempati posisi kedua dan ketiga."},
+ {q:"Kotak A lebih berat daripada kotak B. Kotak B lebih berat daripada kotak C. Kotak mana yang paling ringan?",o:["Kotak A","Kotak B","Kotak C","Semua sama berat"],a:2,why:"Urutan beratnya A, lalu B, lalu C; jadi C paling ringan."},
+ {q:"Tono punya 2 pasang kaus kaki. Berapa jumlah kaus kaki semuanya?",o:["2","3","4","6"],a:2,why:"Satu pasang berisi 2 kaus kaki, jadi 2 pasang berisi 4."},
+ {q:"Pilih benda yang paling tepat untuk mengukur lama waktu sebuah lagu diputar.",o:["Jam","Penggaris","Timbangan","Gelas"],a:0,why:"Jam digunakan untuk mengukur waktu."},
+ {q:"Mira ingin membawa air untuk diminum saat olahraga. Benda apa yang paling sesuai?",o:["Buku tulis","Botol minum","Bantal","Sapu"],a:1,why:"Botol minum dapat menampung air untuk dibawa."},
+ {q:"Di kebun ada ayam dan kelinci. Semuanya berjumlah 3 hewan. Jika ada 1 kelinci, berapa ayam di kebun?",o:["1","2","3","4"],a:1,why:"Tiga hewan dikurangi satu kelinci berarti ada dua ayam."},
+ {q:"Empat anak mendapat satu kue yang dipotong sama besar. Berapa potongan yang didapat setiap anak jika kuenya dibagi rata menjadi 4 potong?",o:["Tidak mendapat potongan","1 potong","2 potong","4 potong"],a:1,why:"Empat potong untuk empat anak berarti setiap anak mendapat satu potong."},
+ {q:"Nina harus menyiram tanaman sebelum pergi bermain. Ia juga harus memakai sepatu sebelum keluar rumah. Urutan mana yang masuk akal?",o:["Bermain, lalu menyiram tanaman","Keluar rumah, lalu memakai sepatu","Menyiram tanaman, memakai sepatu, lalu pergi","Memakai sepatu, tidur, lalu menyiram tanaman"],a:2,why:"Tanaman disiram lebih dulu, kemudian Nina bersiap keluar dengan memakai sepatu."},
+ {q:"Semua ikan hidup di air. Lilo adalah ikan. Kesimpulan yang sesuai adalah ...",o:["Lilo hidup di air","Lilo adalah burung","Lilo hidup di pohon","Lilo tidak membutuhkan air"],a:0,why:"Jika semua ikan hidup di air dan Lilo adalah ikan, Lilo hidup di air."},
+ {q:"Ada 5 kursi. Setiap kursi diduduki satu anak, kecuali satu kursi kosong. Berapa anak yang duduk?",o:["3 anak","4 anak","5 anak","6 anak"],a:1,why:"Lima kursi dengan satu kursi kosong berarti empat kursi diduduki."},
+ {q:"Dina punya 6 permen. Ia memberikan 2 permen kepada adiknya, lalu mendapat 1 permen lagi. Berapa permen Dina sekarang?",o:["3","4","5","7"],a:2,why:"6 dikurangi 2 menjadi 4, lalu ditambah 1 menjadi 5."},
+ {q:"Manakah yang berbeda kelompok karena bukan alat untuk menulis?",o:["Pensil","Krayon","Pulpen","Piring"],a:3,why:"Pensil, krayon, dan pulpen dapat digunakan untuk menulis atau menggambar; piring bukan alat tulis."},
+ {q:"Sebuah bus membawa 6 penumpang. Di halte pertama, 2 penumpang turun dan 3 penumpang naik. Berapa penumpang sekarang?",o:["5","6","7","11"],a:2,why:"6 dikurangi 2 menjadi 4, lalu ditambah 3 menjadi 7."},
+ {q:"Fajar punya dua kartu: satu bergambar bintang dan satu bergambar bulan. Ia mengambil kartu yang bukan bulan. Kartu apa yang diambil?",o:["Kartu bintang","Kartu bulan","Kedua kartu","Tidak ada kartu"],a:0,why:"Dari dua pilihan itu, kartu yang bukan bulan adalah kartu bintang."},
+ {q:"Di meja ada gelas, sendok, dan piring. Benda mana yang biasanya digunakan untuk menyendok sup?",o:["Gelas","Sendok","Piring","Taplak meja"],a:1,why:"Sendok digunakan untuk mengambil atau menyendok sup."},
+ {q:"Tiga lampu berderet: lampu hijau, lampu kuning, dan lampu merah. Lampu kuning berada di antara hijau dan merah. Jika lampu hijau ada di kiri, lampu apa yang ada di kanan?",o:["Hijau","Kuning","Merah","Tidak ada lampu"],a:2,why:"Urutannya dari kiri ke kanan adalah hijau, kuning, merah."},
+ {q:"Ayu ingin mengetahui apakah dua wadah memiliki jumlah air yang sama. Cara paling adil adalah ...",o:["Melihat warna wadah","Membandingkan tinggi wadah saja","Menuangkan air ke wadah ukur yang sama secara bergantian","Memilih wadah yang lebih besar"],a:2,why:"Menggunakan wadah ukur yang sama membantu membandingkan banyak air dengan adil."}
+];
+
+let current = 0;
+let answers = Array(questions.length).fill(null);
+let startedAt = null;
+let submitting = false;
+
+const $ = id => document.getElementById(id);
+function showScreen(id) {
+  ["startScreen","quizScreen","resultScreen"].forEach(s => $(s).classList.toggle("hidden", s !== id));
+}
+function renderQuestion() {
+  const item = questions[current];
+  $("questionCounter").textContent = `Soal ${current+1} dari ${questions.length}`;
+  $("answeredCount").textContent = `Terjawab ${answers.filter(v => v !== null).length}/${questions.length}`;
+  $("progressBar").style.width = `${((current+1)/questions.length)*100}%`;
+  $("questionText").textContent = item.q;
+  $("options").innerHTML = "";
+  item.o.forEach((option, index) => {
+    const label = document.createElement("label");
+    label.className = "option";
+    const radio = document.createElement("input");
+    radio.type = "radio"; radio.name = "answer"; radio.value = index;
+    radio.checked = answers[current] === index;
+    radio.addEventListener("change", () => {
+      answers[current] = index;
+      $("answeredCount").textContent = `Terjawab ${answers.filter(v => v !== null).length}/${questions.length}`;
     });
-  </script>
+    const span = document.createElement("span");
+    span.textContent = `${String.fromCharCode(65+index)}. ${option}`;
+    label.append(radio, span); $("options").appendChild(label);
+  });
+  $("prevBtn").disabled = current === 0;
+  $("nextBtn").textContent = current === questions.length-1 ? "Selesai & Lihat Nilai" : "Berikutnya →";
+}
+function formatDuration(ms) {
+  const total = Math.max(0, Math.floor(ms/1000));
+  return `${Math.floor(total/60)} menit ${total%60} detik`;
+}
+function renderReview() {
+  const area = $("reviewArea");
+  area.innerHTML = "<h3>Pembahasan Jawaban</h3>";
+  questions.forEach((item, i) => {
+    const correct = answers[i] === item.a;
+    const div = document.createElement("div"); div.className = "review-item";
+    const title = document.createElement("strong");
+    title.textContent = `${i+1}. ${item.q}`;
+    const your = document.createElement("p"); your.className = correct ? "good" : "bad";
+    your.textContent = `Jawabanmu: ${answers[i] === null ? "Belum dijawab" : item.o[answers[i]]}`;
+    const key = document.createElement("p"); key.className = "good";
+    key.textContent = `Jawaban benar: ${item.o[item.a]}`;
+    const why = document.createElement("p"); why.textContent = `Penjelasan: ${item.why}`;
+    div.append(title, your, key, why); area.appendChild(div);
+  });
+}
+async function finishQuiz() {
+  const name = $("studentName").value.trim();
+  const correctCount = questions.reduce((sum, q, i) => sum + (answers[i] === q.a ? 1 : 0), 0);
+  const wrongCount = questions.length - correctCount;
+  const score = correctCount * 5;
+  const duration = formatDuration(Date.now() - startedAt);
+  const now = new Date();
+  const timeWIB = new Intl.DateTimeFormat("id-ID", {dateStyle:"full",timeStyle:"medium",timeZone:"Asia/Jakarta"}).format(now);
+
+  $("resultTitle").textContent = `Hasil Kuis — ${name}`;
+  $("scoreText").textContent = `${score}/100`;
+  $("summaryText").textContent = `Jawaban benar: ${correctCount} • Salah atau kosong: ${wrongCount} • Waktu: ${duration}`;
+  $("submitStatus").textContent = "Sedang mengirim hasil...";
+  $("retryBtn").disabled = true;
+  $("reviewArea").classList.add("hidden");
+  showScreen("resultScreen");
+  renderReview();
+
+  if (submitting) return;
+  submitting = true;
+  const formData = new FormData();
+  formData.append("Nama", name);
+  formData.append("Nilai", String(score));
+  formData.append("Jawaban benar", String(correctCount));
+  formData.append("Jawaban salah atau kosong", String(wrongCount));
+  formData.append("Durasi", duration);
+  formData.append("Waktu WIB", timeWIB);
+  formData.append("Jenis kuis", "LOGMAT Kelas 1–2 SD — Paket Baru");
+  formData.append("Rincian jawaban", JSON.stringify(questions.map((q,i)=>({
+    nomor:i+1, soal:q.q, jawabanPeserta:answers[i]===null?"Belum dijawab":q.o[answers[i]],
+    jawabanBenar:q.o[q.a], benar:answers[i]===q.a, penjelasan:q.why
+  })), null, 2));
+
+  try {
+    const response = await fetch(FORMSPREE_ENDPOINT, {
+      method: "POST",
+      body: formData,
+      headers: { Accept: "application/json" }
+    });
+    let result = {};
+    try { result = await response.json(); } catch (_) {}
+    if (!response.ok) {
+      const message = result.errors ? result.errors.map(e => e.message).join(", ") : `Server menolak pengiriman (HTTP ${response.status})`;
+      throw new Error(message);
+    }
+    $("submitStatus").textContent = "✅ Hasil kuis berhasil dikirim ke Formspree!";
+  } catch (error) {
+    console.error("Formspree error:", error);
+    $("submitStatus").textContent = "❌ Gagal mengirim: " + error.message + ". Nilai tetap bisa dilihat di halaman ini.";
+  } finally {
+    submitting = false;
+    $("retryBtn").disabled = false;
+  }
+}
+$("startBtn").addEventListener("click", () => {
+  const name = $("studentName").value.trim();
+  if (!name) { alert("Isi nama peserta dulu, ya."); $("studentName").focus(); return; }
+  current = 0; answers = Array(questions.length).fill(null); startedAt = Date.now();
+  showScreen("quizScreen"); renderQuestion();
+});
+$("prevBtn").addEventListener("click", () => { if(current>0){current--;renderQuestion();} });
+$("nextBtn").addEventListener("click", () => {
+  if (answers[current] === null) {
+    if (!confirm("Soal ini belum dijawab. Mau lanjut tanpa menjawab?")) return;
+  }
+  if(current < questions.length-1){current++;renderQuestion();}
+  else if(confirm("Selesaikan kuis dan lihat nilai?")) finishQuiz();
+});
+$("reviewBtn").addEventListener("click", () => {
+  $("reviewArea").classList.toggle("hidden");
+  $("reviewBtn").textContent = $("reviewArea").classList.contains("hidden") ? "Lihat Pembahasan" : "Sembunyikan Pembahasan";
+});
+$("retryBtn").addEventListener("click", () => {
+  current=0; answers=Array(questions.length).fill(null); startedAt=null;
+  $("reviewBtn").textContent="Lihat Pembahasan"; showScreen("startScreen");
+});
+</script>
 </body>
 </html>
